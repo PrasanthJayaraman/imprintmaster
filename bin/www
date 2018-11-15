@@ -8,6 +8,10 @@ var app = require('../app');
 var debug = require('debug')('imprintmaster:server');
 var http = require('http');
 
+var db = require("../db.js");
+var indexRouter = require('../routes/index');
+var usersRouter = require('../routes/users');
+
 /**
  * Get port from environment and store in Express.
  */
@@ -19,15 +23,38 @@ app.set('port', port);
  * Create HTTP server.
  */
 
-var server = http.createServer(app);
+var server = null;
 
 /**
  * Listen on provided port, on all network interfaces.
  */
 
-server.listen(port);
-server.on('error', onError);
-server.on('listening', onListening);
+db.connect(function (err, mongo) {
+  if (err) {    
+    process.exit(-1);
+  }
+
+  // Initialize the database
+  db.init(function (err) {
+    if (err) {      
+      process.exit(-1);
+    }
+
+    app.use(function (req, res, next) {
+      req.db = mongo;
+      next();
+    });
+    // Load the routes    
+
+    app.use('/', indexRouter);
+    app.use('/api/users', usersRouter);
+
+    server = http.createServer(app);
+    server.listen(port);
+    server.on('error', onError);
+    server.on('listening', onListening);
+  });
+});
 
 /**
  * Normalize a port into a number, string, or false.
@@ -77,6 +104,8 @@ function onError(error) {
   }
 }
 
+
+
 /**
  * Event listener for HTTP server "listening" event.
  */
@@ -87,4 +116,5 @@ function onListening() {
     ? 'pipe ' + addr
     : 'port ' + addr.port;
   debug('Listening on ' + bind);
+  console.log('Server is Listening on', addr.port);
 }
