@@ -46,7 +46,7 @@ db.connect(function (err, mongo) {
     });
     // Load the routes    
 
-    app.use('/', indexRouter);
+    app.use('/api/config', indexRouter);
     app.use('/api/users', usersRouter);
 
     server = http.createServer(app);

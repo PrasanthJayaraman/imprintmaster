@@ -1,5 +1,6 @@
 const common = require('../helpers/common');
 const User = require('../models/users');
+const Config = require('../models/config');
 
 exports.create = function (req, res, next) {
     var user = req.body;
@@ -75,10 +76,12 @@ exports.create = function (req, res, next) {
                         message: "Error Creating User Profile"
                     });
                 } else {
-                    return res.status(201).send({
-                        status: true,
-                        accessToken: userData.accessToken
+                    res.status(201).send({
+                        status: true                        
                     });
+                    var configData = new Config({userId: userData._id});
+                    configData.save();
+                    return next();
                 }
             })
         }

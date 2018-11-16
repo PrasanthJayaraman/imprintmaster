@@ -12,6 +12,8 @@ var verifySchema = new Schema({
         type: Boolean,
         default: false
     }
+}, {
+    _id: false
 });
 
 var addressSchema = new Schema({
@@ -34,6 +36,8 @@ var addressSchema = new Schema({
         type: String,
         trim: true
     }
+}, {
+    _id: false
 });
 
 var employeeSchema = new Schema({
@@ -205,6 +209,12 @@ userSchema.virtual('password')
         this._salt = salt;
         this._password = common.sha512(value + salt);
     });
+
+userSchema.statics.findByAuthKey = function (authKey, callback) {
+    this.findOne({
+        accessToken: authKey
+    }, callback);
+};
 
 userSchema.statics.create = function (obj, callback) {
     new this(obj).save(callback);
