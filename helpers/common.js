@@ -25,7 +25,7 @@ function generateOTPKey() {
 }
 exports.generateOTPKey = generateOTPKey;
 
-function registration(length) {
+function registration() {
     return "IM2018PRINT100" + Math.floor(100000 + Math.random() * 900000);
 };
 exports.registration = registration;

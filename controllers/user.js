@@ -35,7 +35,7 @@ exports.create = function (req, res, next) {
         });
     }
 
-    User.lookUp(user, function (err, existingUser) {
+    User.lookUpUser(user, function (err, existingUser) {
         if (err) {
             return res.status(500).send({
                 message: "Error looking up User"
@@ -97,7 +97,13 @@ exports.login = function(req, res, next){
         });
     }
 
-    User.lookUp(user, function (err, userData) {
+    if (!user.password) {
+        return res.status(400).send({
+            message: "Password is Missing"
+        });
+    }
+
+    User.lookUpUser(user, function (err, userData) {
         if (err) {
             return res.status(500).send({
                 message: "Error looking up for User"
@@ -117,7 +123,7 @@ exports.login = function(req, res, next){
                 } else {
                     return res.status(200).send({
                         status: true,
-                        accessToken: userData.accessToken
+                        accessToken: loggedInUser.accessToken
                     });
                 }
             })

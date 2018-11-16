@@ -9,8 +9,7 @@ var debug = require('debug')('imprintmaster:server');
 var http = require('http');
 
 var db = require("../db.js");
-var indexRouter = require('../routes/index');
-var usersRouter = require('../routes/users');
+var router = require('../routes.js');
 
 /**
  * Get port from environment and store in Express.
@@ -46,8 +45,7 @@ db.connect(function (err, mongo) {
     });
     // Load the routes    
 
-    app.use('/api/config', indexRouter);
-    app.use('/api/users', usersRouter);
+    app.use('/api/v1', router);    
 
     server = http.createServer(app);
     server.listen(port);

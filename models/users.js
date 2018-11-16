@@ -64,7 +64,7 @@ var employeeSchema = new Schema({
     },
     active: { // make inactiv if some companies cancels our services, incase if they come back we could have their data back.
         type: Boolean,
-        default: true,
+        default: false,
         index: true
     },
     phone: {
@@ -89,12 +89,13 @@ var employeeSchema = new Schema({
     _salt: { // encrypt & decrypt using salt
         type: String
     },
-    creadted: {
+    created: {
         type: Date,
         default: Date.now
     },
     modified: {
-        type: Date
+        type: Date,
+        default: Date.now
     },
     accessToken: {
         type: String,
@@ -110,6 +111,18 @@ var employeeSchema = new Schema({
     },
     verify: verifySchema
 });
+
+employeeSchema.virtual('password')
+    .get(function () {
+        return function (password) {
+            return (common.sha512(password + this._salt) === this._password);
+        }
+    })
+    .set(function (value) {
+        var salt = common.rand(512);
+        this._salt = salt;
+        this._password = common.sha512(value + salt);
+    });
 
 var userSchema = new Schema({
     username: { // login user name for company head
@@ -163,7 +176,7 @@ var userSchema = new Schema({
     _salt: { // encrypt & decrypt using salt
         type: String
     },
-    creadted: {
+    created: {
         type: Date,
         default: Date.now
     },
@@ -186,10 +199,12 @@ var userSchema = new Schema({
         type: Date
     },
     phoneOTP: {
-        type: String
+        type: String,
+        trim: true
     },
     emailOTP: {
-        type: String
+        type: String,
+        trim: true
     },
     verify: verifySchema,
     employees: [employeeSchema]
@@ -220,7 +235,7 @@ userSchema.statics.create = function (obj, callback) {
     new this(obj).save(callback);
 };
 
-userSchema.statics.lookUp = function (obj, callback) {
+userSchema.statics.lookUpUser = function (obj, callback) {
     this.findOne({
         $or: [{
             phone: obj.phone
@@ -230,12 +245,31 @@ userSchema.statics.lookUp = function (obj, callback) {
             username: obj.username
         }]
     }, callback)
-}
+};
+
+userSchema.statics.lookUpEmployee = function (phone, callback) {
+    this.findOne({
+        'employees.phone': phone
+    }, callback);
+};
+
+userSchema.statics.createEmployeeSession = function (id, phone, token, callback) {
+    this.updateOne({
+        _id: id,
+        'employees.phone': phone
+    }, {
+        $set: {
+            'employees.$.accessToken': token,
+            'employees.$.modified': new Date()
+        }
+    }, callback);
+};
 
 userSchema.methods.createSession = function (cb) {
     this.modified = new Date();
     this.accessToken = common.rand();
     this.save(cb);
 };
+
 
 module.exports = User = mongoose.model("User", userSchema);
