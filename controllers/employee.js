@@ -105,13 +105,15 @@ exports.login = function (req, res, next) {
             return res.status(500).send({
                 message: "Error looking up for User"
             });
-        } else if (employeeData) {            
+        } else if (employeeData) {                        
             let index = 0;
+            console.log(employeeData);
             for(var i=0; i<employeeData.employees.length; i++){
                 if(employeeData.employees[i].phone === user.phone){
                     index = i;
                 }
             }
+
             if (!employeeData.employees[index].password(user.password)) {
                 // Wrong passwowrd
                 return res.status(200).send({
@@ -127,10 +129,19 @@ exports.login = function (req, res, next) {
                         message: "Error in creating session"
                     });
                 } else {
-                    return res.status(200).send({
-                        status: true,
-                        accessToken: token
-                    });
+                    Config.findByUserId(employeeData._id, function (err, config) {
+                        if (err) {
+                            return res.status(500).send({
+                                message: "Error in creating session"
+                            });
+                        } else {
+                            return res.status(200).send({
+                                status: true,
+                                accessToken: token,
+                                config
+                            });
+                        }
+                    });                    
                 }
             });            
         } else {
