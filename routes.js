@@ -5,6 +5,7 @@ const config = require('./controllers/config');
 const cookie = require('./services/cookie');
 const user = require('./controllers/user');
 const employee = require('./controllers/employee');
+const meta = require('./controllers/meta');
 
 /* GET home page. */
 router.get('/', function (req, res, next) {
@@ -12,6 +13,10 @@ router.get('/', function (req, res, next) {
         title: 'Express'
     });
 });
+
+router.post('/meta', cookie.Authenticate, meta.addMeta);
+router.get('/meta/:name', cookie.Authenticate, meta.getMeta);
+router.put('/meta', cookie.Authenticate, meta.updateMeta);
 
 router.get('/config/appconfig/:type?', cookie.Authenticate, config.getAppConfig);
 router.post('/config/appconfig', cookie.Authenticate, config.addAppConfig);
