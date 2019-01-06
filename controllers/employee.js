@@ -13,8 +13,8 @@ exports.create = function (req, res, next) {
         });
     }
 
-    if (!employee.phone || !employee.email || !employee.password || !employee.name 
-        || !employee.username || !employee.type || !employee.designation) {
+    if (!employee.phone || !employee.email || !employee.password || !employee.name ||
+        !employee.username || !employee.type || !employee.designation) {
         return res.status(400).send({
             message: "Some Mandatory Field is Missing"
         });
@@ -62,7 +62,7 @@ exports.create = function (req, res, next) {
 
     employee.active = false;
     employee.created = new Date();
-    employee.modified = new Date();    
+    employee.modified = new Date();
     employee.accessToken = common.rand();
 
     user.employees.push(employee);
@@ -76,7 +76,7 @@ exports.create = function (req, res, next) {
         } else {
             return res.status(201).send({
                 status: true
-            });            
+            });
         }
     })
 }
@@ -87,7 +87,7 @@ function findEmployee(arr, key, value) {
 
 exports.login = function (req, res, next) {
     var user = req.body;
-
+    console.log("USER", user);
     if (!user || Object.keys(user).length === 0) {
         return res.status(400).send({
             message: "User data is required"
@@ -105,11 +105,11 @@ exports.login = function (req, res, next) {
             return res.status(500).send({
                 message: "Error looking up for User"
             });
-        } else if (employeeData) {                        
+        } else if (employeeData) {
             let index = 0;
-            console.log(employeeData);
-            for(var i=0; i<employeeData.employees.length; i++){
-                if(employeeData.employees[i].phone === user.phone){
+            // console.log(employeeData);
+            for (var i = 0; i < employeeData.employees.length; i++) {
+                if (employeeData.employees[i].phone === user.phone) {
                     index = i;
                 }
             }
@@ -123,12 +123,13 @@ exports.login = function (req, res, next) {
 
             var token = common.rand();
 
-            User.createEmployeeSession(employeeData._id, user.phone, token, function(err, doc){
+            User.createEmployeeSession(employeeData._id, user.phone, token, function (err, doc) {
                 if (err) {
                     return res.status(500).send({
                         message: "Error in creating session"
                     });
                 } else {
+                    console.log(employeeData.employees[index]);
                     Config.findByUserId(employeeData._id, function (err, config) {
                         if (err) {
                             return res.status(500).send({
@@ -138,16 +139,17 @@ exports.login = function (req, res, next) {
                             return res.status(200).send({
                                 status: true,
                                 accessToken: token,
+                                keys: ["appList", "leads", "sales", "products"],
                                 config
                             });
                         }
-                    });                    
+                    });
                 }
-            });            
+            });
         } else {
             return res.status(200).send({
                 status: false
             });
         }
-    });    
+    });
 }
