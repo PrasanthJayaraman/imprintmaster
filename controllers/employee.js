@@ -140,7 +140,10 @@ exports.login = function (req, res, next) {
                                 status: true,
                                 accessToken: token,
                                 keys: ["appList", "leads", "sales", "products"],
-                                config
+                                appList: config["appList"] || [],
+                                leads: config["leads"] || [],
+                                sales: config["sales"] || [],
+                                products: config["products"] || []
                             });
                         }
                     });
