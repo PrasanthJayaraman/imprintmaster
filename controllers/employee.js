@@ -139,11 +139,12 @@ exports.login = function (req, res, next) {
                             return res.status(200).send({
                                 status: true,
                                 accessToken: token,
-                                keys: ["appList", "leads", "sales", "products"],
                                 appList: config["appList"] || [],
-                                leads: config["leads"] || [],
-                                sales: config["sales"] || [],
-                                products: config["products"] || []
+                                keys: {
+                                    leads: config["leads"] || [],
+                                    sales: config["sales"] || [],
+                                    products: config["products"] || []
+                                }
                             });
                         }
                     });
