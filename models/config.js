@@ -41,6 +41,7 @@ var configSchema = new Schema({
     leads: [orderSchema],
     sales: [orderSchema],
     products: [orderSchema],
+    details: [orderSchema],
     modified: {
         type: Date,
         default: new Date()

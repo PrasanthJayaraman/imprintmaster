@@ -57,10 +57,10 @@ exports.create = function (req, res, next) {
     employee.verify.phone = false;
     employee.verify.email = false;
 
-    employee.phoneOTP = common.generateOTPKey();
-    employee.emailOTP = common.generateOTPKey();
+    //employee.phoneOTP = common.generateOTPKey();
+    //employee.emailOTP = common.generateOTPKey();
 
-    employee.active = false;
+    employee.active = true;
     employee.created = new Date();
     employee.modified = new Date();
     employee.accessToken = common.rand();
@@ -143,7 +143,8 @@ exports.login = function (req, res, next) {
                                 keys: {
                                     leads: config["leads"] || [],
                                     sales: config["sales"] || [],
-                                    products: config["products"] || []
+                                    products: config["products"] || [],
+                                    details: config["details"] || []
                                 }
                             });
                         }
