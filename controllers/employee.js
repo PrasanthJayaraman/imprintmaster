@@ -121,7 +121,10 @@ exports.login = function (req, res, next) {
                 });
             }
 
-            var token = common.rand();
+            var token = undefined;
+            if (!employeeData.employees[index].accessToken) {
+                token = common.rand();
+            }
 
             User.createEmployeeSession(employeeData._id, user.phone, token, function (err, doc) {
                 if (err) {
@@ -138,7 +141,7 @@ exports.login = function (req, res, next) {
                         } else {
                             return res.status(200).send({
                                 status: true,
-                                accessToken: token,
+                                accessToken: token || employeeData.employees[index].accessToken,
                                 appList: config["appList"] || [],
                                 keys: {
                                     leads: config["leads"] || [],

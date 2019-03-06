@@ -17,6 +17,12 @@ var appSchema = new Schema({
     type: {
         type: [String],
         enum: ["employee", "leader", "manager"]
+    },
+    mobile: {
+        type: Boolean
+    },
+    title: {
+        type: String
     }
 }, {
     _id: false

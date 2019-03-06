@@ -254,15 +254,26 @@ userSchema.statics.lookUpEmployee = function (phone, callback) {
 };
 
 userSchema.statics.createEmployeeSession = function (id, phone, token, callback) {
-    this.updateOne({
-        _id: id,
-        'employees.phone': phone
-    }, {
-        $set: {
-            'employees.$.accessToken': token,
-            'employees.$.modified': new Date()
-        }
-    }, callback);
+    if (token) {
+        this.updateOne({
+            _id: id,
+            'employees.phone': phone
+        }, {
+            $set: {
+                'employees.$.accessToken': token,
+                'employees.$.modified': new Date()
+            }
+        }, callback);
+    } else {
+        this.updateOne({
+            _id: id,
+            'employees.phone': phone
+        }, {
+            $set: {
+                'employees.$.modified': new Date()
+            }
+        }, callback);
+    }
 };
 
 userSchema.methods.createSession = function (cb) {
