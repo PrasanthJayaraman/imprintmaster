@@ -24,6 +24,7 @@ exports.addMeta = function (req, res, next) {
 
     Meta.create(data, function (err, metaData) {
         if (err) {
+            console.log(err);
             return res.status(500).send({
                 message: "Error Saving Meta data"
             });

@@ -123,3 +123,125 @@ exports.products = [{
         "value": "ERP"
     }
 ];
+
+exports.details = [{
+        "key": "Aterm",
+        "value": "DSR"
+    },
+    {
+        "key": "Bterm",
+        "value": "Task"
+    },
+    {
+        "key": "Cterm",
+        "value": "Client"
+    }
+];
+
+
+
+exports.meta = {
+    "title": "Report Form",
+    "name": "dsr",
+    "fields": [{
+            "value": [],
+            "type": "textfield",
+            "textSize": "25",
+            "style": "singleline_name",
+            "label": "Client Name",
+            "validation": "true",
+            "key": "client",
+            "priority": 1
+        },
+        {
+            "value": [],
+            "type": "textfield",
+            "textSize": "25",
+            "style": "singleline",
+            "validation": "true",
+            "label": "Contact Person",
+            "key": "person",
+            "priority": 4
+        },
+        {
+            "value": [],
+            "type": "textfield",
+            "textSize": "25",
+            "style": "singleline_number_limit_10pts",
+            "validation": "true",
+            "label": "Contact Number",
+            "key": "contact",
+            "priority": 5
+        },
+        {
+            "value": ["Aterm", "Bterm", "Cterm", "Dterm"],
+            "type": "checkbox",
+            "textSize": "25",
+            "style": "",
+            "validation": "true",
+            "label": "Activity",
+            "key": "sales",
+            "priority": 2
+        },
+        {
+            "value": ["Aterm", "Bterm", "Cterm"],
+            "type": "checkbox",
+            "textSize": "25",
+            "style": "",
+            "validation": "true",
+            "label": "Lead Status",
+            "key": "lead",
+            "priority": 3
+        },
+        {
+            "value": [],
+            "type": "textfield",
+            "textSize": "25",
+            "style": "singleline",
+            "label": "Remarks",
+            "validation": "false",
+            "key": "remarks",
+            "priority": 8
+        },
+        {
+            "value": [],
+            "type": "date",
+            "textSize": "25",
+            "style": "singleline",
+            "validation": "true",
+            "label": "Next FollowUp",
+            "key": "followup",
+            "priority": 6
+        },
+        {
+            "value": [],
+            "type": "location",
+            "textSize": "25",
+            "style": "",
+            "label": "Co-ordinates",
+            "validation": "false",
+            "key": "coordinates",
+            "priority": 7
+        },
+        {
+            "value": [],
+            "type": "camera",
+            "textSize": "25",
+            "style": "",
+            "label": "Photo",
+            "validation": "false",
+            "key": "photo",
+            "priority": 9
+        },
+        {
+            "value": [],
+            "type": "signature",
+            "textSize": "25",
+            "style": "",
+            "label": "Customer signature",
+            "validation": "false",
+            "key": "signature",
+            "priority": 10
+        }
+    ]
+}
