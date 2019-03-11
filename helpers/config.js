@@ -93,6 +93,13 @@ exports.leads = [{
     {
         "key": "Cterm",
         "value": "Cold"
+    },
+    {
+        "key": "Dterm",
+        "value": "Closed-Success"
+    }, {
+        "key": "Eterm",
+        "value": "Closed-Rejected"
     }
 ];
 
@@ -107,6 +114,18 @@ exports.sales = [{
     {
         "key": "Cterm",
         "value": "Followup"
+    },
+    {
+        "key": "Dterm",
+        "value": "Demo"
+    },
+    {
+        "key": "Eterm",
+        "value": "Negotiations"
+    },
+    {
+        "key": "Fterm",
+        "value": "Closure"
     }
 ];
 
@@ -174,7 +193,7 @@ exports.meta = {
             "priority": 5
         },
         {
-            "value": ["Aterm", "Bterm", "Cterm", "Dterm"],
+            "value": ["Aterm", "Bterm", "Cterm", "Dterm", "Eterm", "Fterm"],
             "type": "checkbox",
             "textSize": "25",
             "style": "",
@@ -184,13 +203,23 @@ exports.meta = {
             "priority": 2
         },
         {
-            "value": ["Aterm", "Bterm", "Cterm"],
+            "value": ["Aterm", "Bterm", "Cterm", "Dterm", "Eterm"],
             "type": "checkbox",
             "textSize": "25",
             "style": "",
             "validation": "true",
             "label": "Lead Status",
             "key": "lead",
+            "priority": 3
+        },
+        {
+            "value": ["Aterm", "Bterm", "Cterm", "Dterm", "Eterm"],
+            "type": "checkbox",
+            "textSize": "25",
+            "style": "",
+            "validation": "true",
+            "label": "Product",
+            "key": "product",
             "priority": 3
         },
         {
