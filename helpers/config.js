@@ -194,7 +194,7 @@ exports.meta = {
         },
         {
             "value": ["Aterm", "Bterm", "Cterm", "Dterm", "Eterm", "Fterm"],
-            "type": "checkbox",
+            "type": "radio",
             "textSize": "25",
             "style": "",
             "validation": "true",
@@ -204,7 +204,7 @@ exports.meta = {
         },
         {
             "value": ["Aterm", "Bterm", "Cterm", "Dterm", "Eterm"],
-            "type": "checkbox",
+            "type": "radio",
             "textSize": "25",
             "style": "",
             "validation": "true",
@@ -213,8 +213,8 @@ exports.meta = {
             "priority": 3
         },
         {
-            "value": ["Aterm", "Bterm", "Cterm", "Dterm", "Eterm"],
-            "type": "checkbox",
+            "value": ["Aterm", "Bterm", "Cterm"],
+            "type": "radio",
             "textSize": "25",
             "style": "",
             "validation": "true",
