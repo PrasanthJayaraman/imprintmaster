@@ -144,9 +144,9 @@ exports.login = function (req, res, next) {
                                 accessToken: token || employeeData.employees[index].accessToken,
                                 appList: config["appList"] || [],
                                 keys: {
-                                    leads: config["leads"] || [],
+                                    lead: config["lead"] || [],
                                     sales: config["sales"] || [],
-                                    products: config["products"] || [],
+                                    product: config["product"] || [],
                                     details: config["details"] || []
                                 }
                             });
