@@ -194,8 +194,8 @@ exports.meta = {
         },
         {
             "value": ["Aterm", "Bterm", "Cterm", "Dterm", "Eterm", "Fterm"],
-            "type": "radio",
-            "textSize": "25",
+            "type": "dropdown",
+            "textSize": "20",
             "style": "",
             "validation": "true",
             "label": "Activity",
@@ -204,8 +204,8 @@ exports.meta = {
         },
         {
             "value": ["Aterm", "Bterm", "Cterm", "Dterm", "Eterm"],
-            "type": "radio",
-            "textSize": "25",
+            "type": "dropdown",
+            "textSize": "20",
             "style": "",
             "validation": "true",
             "label": "Lead Status",
@@ -214,8 +214,8 @@ exports.meta = {
         },
         {
             "value": ["Aterm", "Bterm", "Cterm"],
-            "type": "radio",
-            "textSize": "25",
+            "type": "dropdown",
+            "textSize": "20",
             "style": "",
             "validation": "true",
             "label": "Product",
