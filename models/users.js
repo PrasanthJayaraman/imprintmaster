@@ -13,8 +13,8 @@ var verifySchema = new Schema({
         default: false
     }
 }, {
-    _id: false
-});
+        _id: false
+    });
 
 var addressSchema = new Schema({
     street: {
@@ -37,8 +37,8 @@ var addressSchema = new Schema({
         trim: true
     }
 }, {
-    _id: false
-});
+        _id: false
+    });
 
 var employeeSchema = new Schema({
     name: {
@@ -109,7 +109,10 @@ var employeeSchema = new Schema({
     reportingTo: {
         type: Schema.Types.ObjectId
     },
-    verify: verifySchema
+    verify: verifySchema,
+    doj: {
+        type: Date
+    },
 });
 
 employeeSchema.virtual('password')
@@ -209,8 +212,8 @@ var userSchema = new Schema({
     verify: verifySchema,
     employees: [employeeSchema]
 }, {
-    collection: "user"
-});
+        collection: "user"
+    });
 
 // Virtual Properties
 userSchema.virtual('password')
@@ -229,6 +232,28 @@ userSchema.statics.findByAuthKey = function (authKey, callback) {
     this.findOne({
         accessToken: authKey
     }, callback);
+};
+
+userSchema.statics.findEmpAuthKey = function (authKey, callback) {
+    this.findOne({
+        'employees.accessToken': authKey
+    }, function (err, user) {
+        if (err) {
+            callback(err, null);
+        } else if (!user) {
+            callback(null, null);
+        } else {
+            var employee = user.toJSON();
+            delete employee.employees;
+            for (var i = 0; i < user.employees.length; i++) {
+                if (authKey === user.employees[i].accessToken) {
+                    employee.employee = user.employees[i];
+                    break;
+                }
+            }
+            callback(null, employee);
+        }
+    });
 };
 
 userSchema.statics.create = function (obj, callback) {
@@ -253,28 +278,58 @@ userSchema.statics.lookUpEmployee = function (phone, callback) {
     }, callback);
 };
 
+userSchema.statics.findEmployeeById = function (id, callback) {
+    this.findOne({
+        'employees._id': id
+    }, function (err, user) {
+        if (err) {
+            callback(err, null);
+        } else if (!user) {
+            callback(null, null);
+        } else {
+            var employee = user.toJSON();
+            let emp;
+            delete employee.employees;
+            for (var i = 0; i < user.employees.length; i++) {
+                if (user.employees[i]._id.equals(id)) {
+                    emp = user.employees[i];
+                    break;
+                }
+            }
+            callback(null, emp);
+        }
+    });
+};
+
 userSchema.statics.createEmployeeSession = function (id, phone, token, callback) {
     if (token) {
         this.updateOne({
             _id: id,
             'employees.phone': phone
         }, {
-            $set: {
-                'employees.$.accessToken': token,
-                'employees.$.modified': new Date()
-            }
-        }, callback);
+                $set: {
+                    'employees.$.accessToken': token,
+                    'employees.$.modified': new Date()
+                }
+            }, callback);
     } else {
         this.updateOne({
             _id: id,
             'employees.phone': phone
         }, {
-            $set: {
-                'employees.$.modified': new Date()
-            }
-        }, callback);
+                $set: {
+                    'employees.$.modified': new Date()
+                }
+            }, callback);
     }
 };
+
+userSchema.statics.findByUserId = function (userId, callback) {
+    this.findOne({
+        _id: userId
+    }, callback);
+};
+
 
 userSchema.methods.createSession = function (cb) {
     this.modified = new Date();
@@ -282,5 +337,41 @@ userSchema.methods.createSession = function (cb) {
     this.save(cb);
 };
 
+userSchema.methods.toJSON = function () {
+    return {
+        _id: this.id,
+        username: this.username,
+        registrationId: this.registrationId,
+        name: this.name,
+        photo: this.photo,
+        active: this.active,
+        landline: this.landline,
+        phone: this.phone,
+        email: this.email,
+        address: this.address,
+        creadted: this.creadted,
+        modified: this.modified,
+        employees: this.employees
+    }
+};
+
+employeeSchema.methods.toJSON = function () {
+    return {
+        _id: this.id,
+        name: this.name,
+        employeeId: this.employeeId,
+        photo: this.photo,
+        type: this.type,
+        designation: this.designation,
+        active: this.active,
+        phone: this.phone,
+        email: this.email,
+        address: this.address,
+        creadted: this.creadted,
+        modified: this.modified,
+        reportingTo: this.reportingTo,
+        doj: this.doj
+    }
+};
 
 module.exports = User = mongoose.model("User", userSchema);
