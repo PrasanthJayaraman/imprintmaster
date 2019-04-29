@@ -210,7 +210,10 @@ var userSchema = new Schema({
         trim: true
     },
     verify: verifySchema,
-    employees: [employeeSchema]
+    employees: [employeeSchema],
+    baseUrl: {
+        type: String
+    }
 }, {
         collection: "user"
     });
