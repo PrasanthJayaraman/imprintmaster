@@ -3,7 +3,7 @@ const User = require('../models/users');
 const Config = require('../models/config');
 const _ = require('lodash');
 
-exports.create = function(req, res, next) {
+exports.create = function (req, res, next) {
 	var user = req.user;
 	var employee = req.body;
 
@@ -74,7 +74,7 @@ exports.create = function(req, res, next) {
 
 	user.employees.push(employee);
 
-	User.create(user, function(err, employeeData) {
+	User.create(user, function (err, employeeData) {
 		if (err) {
 			console.error(err);
 			return res.status(500).send({
@@ -89,10 +89,10 @@ exports.create = function(req, res, next) {
 };
 
 function findEmployee(arr, key, value) {
-	return _.find(arr || [], [ key, value ]);
+	return _.find(arr || [], [key, value]);
 }
 
-exports.login = function(req, res, next) {
+exports.login = function (req, res, next) {
 	var user = req.body;
 	console.log('USER', user);
 	if (!user || Object.keys(user).length === 0) {
@@ -107,7 +107,7 @@ exports.login = function(req, res, next) {
 		});
 	}
 
-	User.lookUpEmployee(user.phone, function(err, employeeData) {
+	User.lookUpEmployee(user.phone, function (err, employeeData) {
 		if (err) {
 			return res.status(500).send({
 				message: 'Error looking up for User'
@@ -133,14 +133,14 @@ exports.login = function(req, res, next) {
 				token = common.rand();
 			}
 
-			User.createEmployeeSession(employeeData._id, user.phone, token, function(err, doc) {
+			User.createEmployeeSession(employeeData._id, user.phone, token, function (err, doc) {
 				if (err) {
 					return res.status(500).send({
 						message: 'Error in creating session'
 					});
 				} else {
 					console.log(employeeData.employees[index]);
-					Config.findByUserId(employeeData._id, function(err, config) {
+					Config.findByUserId(employeeData._id, function (err, config) {
 						if (err) {
 							return res.status(500).send({
 								message: 'Error in creating session'
@@ -155,7 +155,8 @@ exports.login = function(req, res, next) {
 									sales: config['sales'] || [],
 									product: config['product'] || [],
 									details: config['details'] || []
-								}
+								},
+								baseUrl: employeeData.employees[index].baseUrl
 							});
 							Log.addLog({
 								userId: employeeData.employees[index]._id,
