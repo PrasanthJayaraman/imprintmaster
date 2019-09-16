@@ -15,7 +15,7 @@ exports.create = function (req, res, next) {
         return res.status(400).send({
             message: "Some Mandatory Field is Missing"
         });
-    }    
+    }
 
     // if(!common.validatePhone(user.phone)) {
     //     return res.status(400).send({
@@ -56,7 +56,7 @@ exports.create = function (req, res, next) {
             }
         } else {
             // Set false by default
-            user.verify = {}; 
+            user.verify = {};
             user.verify.phone = false;
             user.verify.email = false;
 
@@ -77,18 +77,18 @@ exports.create = function (req, res, next) {
                     });
                 } else {
                     res.status(201).send({
-                        status: true                        
+                        status: true
                     });
-                    var configData = new Config({userId: userData._id});
+                    var configData = new Config({ userId: userData._id });
                     configData.save();
                     return next();
                 }
             })
         }
-    });    
+    });
 }
 
-exports.login = function(req, res, next){
+exports.login = function (req, res, next) {
     var user = req.body;
 
     if (!user || Object.keys(user).length === 0) {
@@ -112,7 +112,7 @@ exports.login = function(req, res, next){
             if (!userData.password(user.password)) {
                 // Wrong passwowrd
                 return res.status(200).send({
-                    status: false                    
+                    status: false
                 });
             }
             userData.createSession(function (err, loggedInUser) {
@@ -123,7 +123,8 @@ exports.login = function(req, res, next){
                 } else {
                     return res.status(200).send({
                         status: true,
-                        accessToken: loggedInUser.accessToken
+                        accessToken: loggedInUser.accessToken,
+                        baseUrl: loggedInUser.baseUrl
                     });
                 }
             })

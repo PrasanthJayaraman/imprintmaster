@@ -17,6 +17,12 @@ var appSchema = new Schema({
     type: {
         type: [String],
         enum: ["employee", "leader", "manager"]
+    },
+    mobile: {
+        type: Boolean
+    },
+    title: {
+        type: String
     }
 }, {
     _id: false
@@ -38,9 +44,9 @@ var configSchema = new Schema({
         type: Schema.Types.ObjectId
     },
     appList: [appSchema],
-    leads: [orderSchema],
+    lead: [orderSchema],
     sales: [orderSchema],
-    products: [orderSchema],
+    product: [orderSchema],
     details: [orderSchema],
     modified: {
         type: Date,
